@@ -1,0 +1,118 @@
+//1. Create an array with five scores out of 100, compute the average of the scores and compute percentage.
+package com.yash;
+
+public class avrage {
+	
+		public static void main(String[] args) {
+	        int [] Array = { 90,75,89,59,63 };
+	       int sum = 0;
+
+	        for (double num: Array) {
+	           sum += num;
+	        }
+	        System.out.println("sum= "+sum);
+	        double average = sum / Array.length;
+	        double percentage=(sum/5)*100;
+	        System.out.println("The average is:"+average);
+	        System.out.println("The percentage is:"+percentage);
+	    }
+	}
+2. Create two 3 X 3 matrices and perform multiplication of matrices.
+package com.yash;
+
+class matrixmultiplication { 
+    public static void main(String args[]){  
+  
+    int FIrstMatrix[][]={{1,2,3},{5,6,9},{3,1,6}};    
+    int SecondMatrix[][]={{8,7,9},{2,0,9},{2,4,1}};    
+        
+    
+    int thirdMatrix[][]=new int[3][3];  
+        
+     
+    for(int i=0;i<3;i++){    
+    for(int j=0;j<3;j++){    
+    	thirdMatrix[i][j]=0;      
+    for(int k=0;k<3;k++)      
+    {      
+    	thirdMatrix[i][j]+=FIrstMatrix[i][k]*SecondMatrix[k][j];      
+    }//end of k loop  
+    System.out.print(thirdMatrix[i][j]+" ");  //printing matrix element  
+    }//end of j loop  
+    System.out.println();//new line    
+    }    
+    }}  
+
+3. Create a variable of type String with following data,
+   String data="Java is Object oriented. Java is platform independent.Java is simple."
+Search for word "Java" and count number of occurrences.
+
+package com.yash;
+import java.util.*;
+
+public class occurance {
+	
+	public static class task1 {
+	 static final int N = 256;
+	 static char Max(String str1) {
+	  int ctr[] = new int[N];
+	  int l = str1.length();
+	  
+	  for (int i = 0; i < l; i++)
+	   ctr[str1.charAt(i)]++;
+	  int max = -1;
+	  char result = ' ';
+
+	  for (int i = 0; i < l; i++) {
+	   if (max < ctr[str1.charAt(i)]) {
+	    max = ctr[str1.charAt(i)];
+	    result = str1.charAt(i);
+	   }
+	  }
+
+	  return result;
+	 }
+	 public static void main(String[] args) {
+	  String str1 = "test";
+	  System.out.println("The given string is: " + str1);
+	  System.out.println("Max occurring character in the given string is: " + Max(str1));
+	 }
+	}}
+
+
+4. Create an array of type int with 10 elements.
+ 
+  int array[]={8,2,3,1,6,5,7};
+
+
+public class SortDecending {​​​​ 
+    public static void main(String args[]) {​​​​ 
+      int array[]={8,2,3,1,6,5,7}​​​​; 
+      int temp,i; 
+      for(i=0;i<7;i++) 
+      {​​​​ 
+          for(int j=i+1;j<=7;j++) 
+          {​​​​ 
+              if(array[i]<array[j]) 
+              {​​​​ 
+                  temp=array[i]; 
+                  array[i]=array[j]; 
+                  array[j]=temp; 
+              }​​​​ 
+          }​​​​ 
+         
+      }​​​​ 
+      System.out.println("Array Sorted in Decending Order\n"); 
+      for(i=0;i<10;i++) 
+      {​​​​ 
+       System.out.println(array[i]); 
+          
+      }​​​​
+
+
+
+
+
+
+
+
