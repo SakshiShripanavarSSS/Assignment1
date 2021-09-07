@@ -1,0 +1,10 @@
+Que: Identify Entities ,sub entities ,thier attribute ,methods of student Management System:
+
+
+ans:  (Entity)=====>Attributes
+	Student====>Student Name,rollNo,Address,Username,Password,Mobile number,student email-ID.
+	
+	Exam=======> examType,login ,password,subjectName,attaindanceSheet,SheduleDate,
+	fees========> name,rollno
+
+	methods: Login credintials,ExamTypes,fees structure,timetable,ExamSchedule.
