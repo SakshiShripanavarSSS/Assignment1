@@ -1,0 +1,28 @@
+Emp name : Sakshi Shripanavar 		empid=101218
+
+que 	1) C
+	2) C
+	3)A
+	4)B
+	5)B
+	6)D
+	7)B
+	8)C
+	9)B,C
+	10)A
+	11)true
+	12)A
+	13)C,E,F,B	
+	14)B
+	15)B,C,E
+	16)C
+	17)a
+	18)D
+	19)--
+	20) B
+	21)B
+	22)B	
+	23)false
+	24)C
+	25)C
+
