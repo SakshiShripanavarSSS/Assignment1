@@ -1,0 +1,235 @@
+1. Replace a character a with e in following without using inbuilt funtion:
+package com.yash;
+
+public class desending {
+	public static void main(String []args)
+	{
+		  String org= "Haaaaaallo";
+		      String [] temp=org.split("");
+		      int len=temp.length;
+		      String ne = "";
+		      for(int i=0;i<len;i++)
+		      {
+		          if(temp[i].matches("a"))
+		              temp[i]="e";
+		          ne=ne+temp[i]+"";
+
+		      }
+		        System.out.println(ne);
+		    }
+	}
+
+ 2.Write a code to mask a given string :
+
+package com.yash;
+
+class desending {
+ 
+    public static void main(String[] args) throws Exception {
+        
+        String str = "SakshiShripanavar";
+        String number="8990087464";
+        //mask first 4 characters
+        System.out.println( maskString(str, 2,str.length(), '*') );
+        
+       
+        
+        //mask everything but first and last 4 digits
+        System.out.println( maskString(number, 0, 7, '*') );
+        
+    }
+    
+    private static String maskString(String strText, int start, int end, char maskChar) 
+        throws Exception{
+        
+        if(strText == null || strText.equals(""))
+            return "";
+        
+        if(start < 0)
+            start = 0;
+        
+        if( end > strText.length() )
+            end = strText.length();
+            
+        if(start > end)
+ ;
+        
+        int maskLength = end - start;
+        
+        if(maskLength == 0)
+            return strText;
+        
+        StringBuilder sbMaskString = new StringBuilder(maskLength);
+        
+        for(int i = 0; i < maskLength; i++){
+            sbMaskString.append(maskChar);
+        }
+        
+        return strText.substring(0, start) 
+            + sbMaskString.toString() 
+            + strText.substring(start + maskLength);
+    }
+ 
+}
+	
+
+3.cheack if String starts with A and ends with t.
+
+class Main
+{
+    public static void main(String arg[])
+    {
+        String str = "abcjcbcbcjcbcbht";
+        if (str.startsWith("a")&& str.endsWith("t")) 
+        {
+            System.out.println("Yes..! string starts with a and end with t ="+str);
+        }
+        else
+        {
+            System.out.println("oops! false");
+        }
+         
+    }
+}
+
+
+
+4.4. Create a class Student with following attributes 
+    
+   Student 
+ ============= 
+   rollNo int 
+   studentFirstName String 
+   studentLastName  String 
+   studentAge int 
+  
+ Override toString(),equals(),hashCode() without using tool.*/ 
+
+
+package com.yash; 
+public class StudentData {​​​​ 
+
+  
+
+    private int rollNo; 
+    private String FirstName; 
+    private String LastName; 
+    private int studentAge; 
+     
+    public StudentData(int rollNo,String FirstName, String LastName, int studentAge) 
+    {​​​​ 
+        this.rollNo=rollNo; 
+        this.FirstName=FirstName; 
+        this.LastName=LastName; 
+        this.studentAge=studentAge; 
+         
+    }​​​​ 
+    public String toString() 
+    {​​​​ 
+        return "Student Roll No is: " + rollNo + "  Student Name is : " + FirstName+ " "+ LastName+ "  Student Age IS :  "+ studentAge; 
+         
+    }​​​​     
+}​​​​ 
+
+  
+
+<........................................................................> 
+   //     toString() 
+
+  
+
+
+       package SixsepAssignment; 
+
+  
+
+public class ToStringMethod  extends StudentData{​​​​ 
+     
+     
+
+  
+
+    public ToStringMethod(int rollNo, String FirstName, String LastName, int studentAge) {​​​​ 
+        super(rollNo, FirstName, LastName, studentAge); 
+         
+    }​​​​ 
+
+  
+
+    public static void main(String[] args) {​​​​ 
+         
+         ToStringMethod ts=new ToStringMethod(08,"sakshi","shripanavar",23); 
+       System.out.println(ts); 
+     
+    }​​​​ 
+      
+     
+}​​​​ 
+<................................> 
+//  equals(),hashCode() 
+
+  
+
+package SixsepAssignment; 
+
+  
+
+public class EqualsMethod {​​​​ 
+
+  
+
+    public static void main(String[] args) {​​​​ 
+        String str1= "sakshi";
+        String str2=" Shripanavar"; 
+        String str3="s"; 
+        String s=new String("sakshi"); 
+        Character c= new Character('p'); 
+        System.out.println(str1.equals(str2)); 
+        System.out.println(str2.equals(str3)); 
+        System.out.println(str3.equals(str1)); 
+        System.out.println(str3.equals(c)); 
+        System.out.println(str3.equals(c.toString())); 
+}​​​​
+}​​​​ 
+<........................................> 
+
+  
+// hashCode() 
+
+
+package com.yash; 
+public class Hashcode {​​​​ 
+     public static void main(String args[]) 
+     {​​​​ 
+         String s=new String("sakshi"); 
+         String s1="2"; 
+         Integer n=Integer.parseInt(s1); 
+         Integer n1=new Integer(6767); 
+         
+          System.out.println(s.hashCode()); 
+           
+          System.out.println(s1.hashCode()); 
+           
+          System.out.println(n.hashCode()); 
+           
+          System.out.println(n1.hashCode()); 
+     }​​​​ 
+}​​​​ 
+
+
+
+5. Identify Classes from API Documentation which can be used for static import.
+
+
+ans:
+n order to access static members, it is necessary to qualify references with the class they came from. For example, one must say:
+double r = Math.cos(Math.PI * theta);
+In order to get around this, people sometimes put static members into an interface and inherit from that interface. This is a bad idea. In fact, it's such a bad idea that there's a name for it: the Constant Interface Antipattern (see Effective Java Item 17). The problem is that a class's use of the static members of another class is a mere implementation detail. When a class implements an interface, it becomes part of the class's public API. Implementation details should not leak into public APIs.
+The static import construct allows unqualified access to static members without inheriting from the type containing the static members. Instead, the program imports the members, either individually:
+
+import static java.lang.Math.PI;
+or en masse:
+import static java.lang.Math.*;
+Once the static members have been imported, they may be used without qualification:
+double r = cos(PI * theta);
+The static import declaration is analogous to the normal import declaration. Where the normal import declaration imports classes from packages, allowing them to be used without package qualification, the static import declaration imports static members from classes, allowing them to be used without class qualification.
