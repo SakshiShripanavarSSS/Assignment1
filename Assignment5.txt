@@ -1,0 +1,51 @@
+1. In a String Find and Replace a word 
+e.g. Java is Object Oriented .Java is Programming Language.
+	Replace "Java" with "C++".
+
+
+ans===>
+	class Main {
+    	public static void main(String args[]) {
+        String S1 = new String("Java is Object Oriented .Java is Programming Language");
+        System.out.println("Original String is ': " + S1);
+        System.out.println("Repalaced String is : " + S1.replace("Java", "C++"));
+     
+
+    }
+}
+
+
+Q:2  In a Given String count the no of words,Count the number of Numbers.
+
+String: "12,Rutherford building,Lake Street, Chicago-29".
+
+
+program:
+package com.yash;
+
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+
+public class streamtokenzerclass {
+ public static void main(String []args) throws IOException{
+	 int wordCount=0;
+	 int numcount=0;
+	 StreamTokenizer Stream=new StreamTokenizer(new FileReader("D:\\Text.txt")); 
+	 while(Stream.nextToken()!=StreamTokenizer.TT_EOF)
+	 {
+		 if(Stream.ttype==StreamTokenizer.TT_WORD)
+		 {
+			 wordCount++;	 
+		 }
+		 else if(Stream.ttype==StreamTokenizer.TT_NUMBER)
+		 {
+			 numcount++;
+		 }
+	 }
+	 System.out.println("Numbers in String are="+numcount);
+	 System.out.println("Number of words are in the String are="+wordCount);
+ }
+	
+}
