@@ -1,0 +1,43 @@
+package September9Assignment;
+import java.util.Scanner;
+public class Assignment {
+		double SI=0;
+		 double CI=0;
+		
+		//@override
+		public double calculateSimpleIntrest(double Principle,double Rate,double Time) 
+		  {
+			SI= (Principle*Rate*Time)/100;
+			return SI;
+		  }
+
+		public double calculateCompoundIntrest(double Principle,double Rate,double Time) 
+		  {
+			CI = Principle * Math.pow(1.0+Rate/100.0,Time);
+			return CI;
+		  }
+		
+		public static void main(String[] args) 
+		{
+			
+			Assignment Obj = new Assignment();
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.println("Enter Principle to be Calculated");
+			double  Principle = sc.nextDouble();
+			System.out.println("Enter Rate to be Calculated");
+			double  Rate = sc.nextDouble();
+			System.out.println("Enter Time to be Calculated");
+			double  Time = sc.nextDouble();
+			
+			
+			
+			System.out.println("Simple Intrest :"+Obj.calculateSimpleIntrest(Principle,Rate,Time));
+			System.out.println("Compound Intrest :"+Obj.calculateCompoundIntrest(Principle,Rate,Time));
+			
+			
+
+		}
+
+
+}
