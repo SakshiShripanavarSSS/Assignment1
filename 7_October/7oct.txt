@@ -1,0 +1,210 @@
+package Assignment_7_Oct;
+
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+
+public class ArraySummation extends RecursiveTask<Long> {
+
+	private static final long serialVersionUID = 1L;
+	private static long sum=0;
+	private final int[] sumArray;
+	private final int threshold ; 
+	private int start;
+	private int end;
+	private int mid;
+
+	public ArraySummation(int[] sumArray,  int start, int end,int threshold) {
+		super();
+		this.sumArray = sumArray;
+		this.threshold = threshold;
+		this.start = start;
+		this.end = end;
+	}
+
+	@Override
+	protected Long compute() 
+	{
+		if(end-start>threshold) {
+			for (int i = start; i <= end; i++) {
+				sum+=sumArray[i];
+			}
+			return sum;
+		}
+		else {
+			mid = end-start/2 +start;
+			ArraySummation t1 = new ArraySummation(sumArray, start, mid, threshold);
+			t1.fork();
+			ArraySummation t2 = new ArraySummation(sumArray, mid, end, threshold);
+			long addExact = Math.addExact(t2.compute(), t1.join());
+			return addExact;
+		}
+
+	}
+
+	public static void main(String[] args) throws InterruptedException 
+	{
+		long verifySum=0;
+		ForkJoinPool pool = new ForkJoinPool();
+		int data[] = new int[100000];
+		for(int i=0;i<data.length;i++) {
+			int x = (int)(Math.random() * 100);
+			verifySum+=x;
+			data[i]=x;
+		}	
+
+		System.out.println("---------- Given Array ----------");
+		for (int i = 0; i < data.length; i++) {
+			System.out.print(data[i]+",");
+		}
+
+		ArraySummation task = new ArraySummation(data, 0, data.length-1,data.length/300);
+		Long result = pool.invoke(task);
+		System.out.println("\n\n---------- Verifying Answer ----------\n");
+		Thread.sleep(2000);
+		System.out.println("Summation from FORK-JOIN is : "+result);
+		System.out.println("Actual Sum is : "+verifySum);
+		if(verifySum==result) {
+			System.out.println("---------- Answer Verified ----------");
+		}
+		else {
+			System.out.println("---------- Answer is Incorrect ----------");
+		}
+	}
+
+}
+
+package com.multithreading;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+
+public class ArrayForkJoin {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+
+		int thread = Runtime.getRuntime().availableProcessors();
+		System.out.println(thread);
+
+		int[] numbers = new int[5000];
+		for (int i = 0; i < numbers.length; i++) {
+			numbers[i] = i;
+		}
+
+		ForkJoinPool forkJoinPool = new ForkJoinPool(thread);
+		Long result = forkJoinPool.invoke(new Sum(numbers, 0, numbers.length));
+		System.out.println(result);
+	}
+
+	static class Sum extends RecursiveTask<Long> {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		int low;
+		int high;
+		int[] array;
+
+		Sum(int[] array, int low, int high) {
+			this.array = array;
+			this.low = low;
+			this.high = high;
+		}
+
+		public Long compute() {
+
+			if (high - low <= 10) {
+				long sum = 0;
+				for (int i = low; i < high; ++i)
+					sum += array[i];
+				return sum;
+			} else {
+				int mid = low + (high - low) / 2;
+				Sum left = new Sum(array, low, mid);
+				Sum right = new Sum(array, mid, high);
+				left.fork();
+				long rightResult = right.compute();
+				long leftResult = left.join();
+				return leftResult + rightResult;
+			}
+		}
+	}
+}
+ /BlockingQueueProducerConsumer.java 
+
+package com.multithreading;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+public class BlockingQueueProducerConsumer {
+	public static void main(String[] args) {
+
+		BlockingQueue<Integer> blockingQueue = new ArrayBlockingQueue<Integer>(4);
+
+		Producer producer = new Producer(blockingQueue);
+		Consumer consumer = new Consumer(blockingQueue);
+
+		Thread producerThread = new Thread(producer);
+		Thread consumerThread = new Thread(consumer);
+
+		producerThread.start();
+		consumerThread.start();
+	}
+}
+Consumer.java 
+
+package com.multithreading;
+
+import java.util.concurrent.BlockingQueue;
+
+public class Consumer implements Runnable {
+
+	BlockingQueue<Integer> blockingQueue;
+	int consume = -1;
+
+	public Consumer(BlockingQueue<Integer> blockingQueue)
+    {
+        this.blockingQueue = blockingQueue;
+    }
+
+	@Override
+	public void run() {
+		while (consume != 10) {
+			try {
+				consume = blockingQueue.take();
+				System.out.println("Consumed " + consume);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}
+
+
+
+package com.multithreading;
+
+import java.util.concurrent.BlockingQueue;
+
+public class Producer implements Runnable {
+
+	BlockingQueue<Integer> blockingQueue;
+
+	public Producer(BlockingQueue<Integer> blockingQueue) {
+		this.blockingQueue = blockingQueue;
+	}
+
+	@Override
+	public void run() {
+		for (int i = 1; i <= 10; i++) {
+			try {
+				blockingQueue.put(i);
+				System.out.println("Produced " + i);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}
