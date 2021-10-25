@@ -1,0 +1,198 @@
+package com.test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
+import com.junit5.ArraySorting;
+import com.junit5.Compute;
+
+public class AnnotationTest {
+	@Feature1
+	void testArraysorting() 
+	{
+		ArraySorting array = new ArraySorting();
+		int []input = {3,5,7,1,2,4,8,9};
+		int []actual = array.sortArray(input);
+		int []expected = {1,2,3,4,5,7,8,9};
+		assertArrayEquals(expected, actual);
+	}
+
+	@Feature2
+	void testCalculatorOperation() 
+	{
+		Compute compute = new Compute();
+		int no1=100;
+		int no2=10;
+		int expected = 10;
+		int actual = compute.computeDivision(no1,no2);
+		assertEquals(expected, actual);
+	}
+}
+
+
+package com.junit5;
+
+import java.util.Arrays;
+
+public class ArraySorting {
+	public int[] sortArray(int[] array) {
+		Arrays.sort(array);
+		return array;
+	}
+}
+
+package com.junit5;
+
+public class Compute {
+	public int computeDivision(int a, int b) {
+		if(b!=0) {
+			return a/b;			
+		}
+		return 0;
+	}
+}
+ 19  October_19/FetchList.java 
+@@ -0,0 +1,19 @@
+package com.junit5;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FetchList {
+	public List<Integer> getIntegerList(){
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(38);
+		list.add(29);
+		list.add(10);
+		list.add(28);
+		list.add(16);
+		list.add(82);
+		list.add(12);
+
+		return list;
+	}
+}
+
+package com.test;
+
+import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+public class ParameterizedTestCase {
+	@ParameterizedTest
+	@ValueSource(ints ={2,4,6,8,10})
+	void testArrayEvenElements(int element) 
+	{
+		assertTrue(element%2==0);
+	}
+}
+ 
+
+package com.test;
+
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.hamcrest.core.IsCollectionContaining;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import com.junit5.Compute;
+import com.junit5.FetchList;
+
+public class TagFilter {
+	private List<Integer> list;
+
+	@BeforeEach
+	void setUp() throws Exception {
+		list = new FetchList().getIntegerList();
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+		list = null;
+	}
+
+	@DisplayName("Test 1 : Elements present in a list or not")
+	@Tag("FAST")
+	@Test
+	void test1() {
+		assertThat(list, IsCollectionContaining.hasItems(16, 28, 10));
+	}
+
+	@DisplayName("Test 2 : Number is greater than 10")
+	@Tag("SLOW")
+	@Test
+	void test2() {
+		Compute compute = new Compute();
+		assertTrue(compute.computeDivision(100, 10) >= 10);
+
+	}
+}
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.junit5</groupId>
+  <artifactId>Junit5</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Junit5</name>
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+		<junit.jupiter.version>5.5.2</junit.jupiter.version>
+		<junit.platform.version>1.5.2</junit.platform.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>${junit.platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+				<groups>FAST</groups>
+				<excludedGroups>SLOW</excludedGroups>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>1.1.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.junit.jupiter</groupId>
+						<artifactId>junit-jupiter-engine</artifactId>
+						<version>5.1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
