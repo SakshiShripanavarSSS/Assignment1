@@ -1,0 +1,255 @@
+package com.multithreading;
+
+import java.util.Arrays;
+
+public class ArraySorting implements Runnable{
+
+	int[] array1={79,23,34,78,90};
+	int[] array2={55,3,20,89,23};
+	int[] array3={80,43,12,34,67};
+
+	@Override
+	public void run() {
+		try {
+			Arrays.sort(array1);
+			Arrays.sort(array2);
+			Arrays.sort(array3);
+
+			for(int i=0;i<array1.length;i++) {
+				System.out.println("Sorted array1 - "+array1[i]);
+				Thread.sleep(1000);
+			}
+			for(int i=0;i<array2.length;i++) {
+				System.out.println("Sorted array2 - "+array2[i]);
+				Thread.sleep(1000);
+			}
+			for(int i=0;i<array3.length;i++) {
+				System.out.println("Sorted array3 - "+array3[i]);
+				Thread.sleep(1000);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	public static void main(String[] args) {
+		Thread thread = new Thread(new ArraySorting());
+		thread.start();
+	}
+
+}
+
+
+
+package com.multithreading;
+
+public class Candidate implements Runnable {
+
+	private String candidateName;
+	private Interview interview;
+
+	public String getCandidateName() {
+		return candidateName;
+	}
+
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+
+	public Interview getInterview() {
+		return interview;
+	}
+
+	public void setInterview(Interview interview) {
+		this.interview = interview;
+	}
+
+	public Candidate(String candidateName, Interview interview) {
+		super();
+		this.candidateName = candidateName;
+		this.interview = interview;
+	}
+
+	@Override
+	public void run() {
+		System.out.println(candidateName + " is waiting in the queue.");
+		synchronized (interview) {
+			System.out.println(candidateName + " entered into the room.");
+			System.out.println(candidateName + " interview is going on.");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(candidateName + " has done with their interview.");
+		}
+
+	}
+
+}
+
+
+package com.multithreading;
+
+import java.util.concurrent.locks.Lock;
+
+public class CandidateLock implements Runnable {
+
+	private String candiateName;
+	private InterviewLock interviewLock;
+	Lock lock;
+
+	public CandidateLock(String candiateName, InterviewLock interviewLock, Lock lock) {
+		super();
+		this.candiateName = candiateName;
+		this.interviewLock = interviewLock;
+		this.lock = lock;
+	}
+
+	@Override
+	public void run() {
+		System.out.println(candiateName + " is waiting in the queue");
+		synchronized (interviewLock) {
+			lock.lock();
+			interviewLock.giveInterview(candiateName);
+			lock.unlock();
+		}
+	}
+
+}
+
+
+package com.multithreading;
+
+public class Interview {
+	private String interviewRound;
+	private String interviewPlace;
+	private String interviewBatch;
+
+	public String getInterviewRound() {
+		return interviewRound;
+	}
+
+	public void setInterviewRound(String interviewRound) {
+		this.interviewRound = interviewRound;
+	}
+
+	public String getInterviewPlace() {
+		return interviewPlace;
+	}
+
+	public void setInterviewPlace(String interviewPlace) {
+		this.interviewPlace = interviewPlace;
+	}
+
+	public String getInterviewBatch() {
+		return interviewBatch;
+	}
+
+	public void setInterviewBatch(String interviewBatch) {
+		this.interviewBatch = interviewBatch;
+	}
+
+	public Interview(String interviewName, String interviewPlace, String interviewBatch) {
+		super();
+		this.interviewRound = interviewName;
+		this.interviewPlace = interviewPlace;
+		this.interviewBatch = interviewBatch;
+	}
+}
+
+
+package com.multithreading;
+
+public class InterviewLock {
+	private String interviewRound;
+	private String interviewPlace;
+	private String interviewBatch;
+
+	public String getInterviewRound() {
+		return interviewRound;
+	}
+
+	public void setInterviewRound(String interviewRound) {
+		this.interviewRound = interviewRound;
+	}
+
+	public String getInterviewPlace() {
+		return interviewPlace;
+	}
+
+	public void setInterviewPlace(String interviewPlace) {
+		this.interviewPlace = interviewPlace;
+	}
+
+	public String getInterviewBatch() {
+		return interviewBatch;
+	}
+
+	public void setInterviewBatch(String interviewBatch) {
+		this.interviewBatch = interviewBatch;
+	}
+
+	public InterviewLock(String interviewRound, String interviewPlace, String interviewBatch) {
+		super();
+		this.interviewRound = interviewRound;
+		this.interviewPlace = interviewPlace;
+		this.interviewBatch = interviewBatch;
+	}
+
+	public void giveInterview(String candidateName)
+	{
+			synchronized(candidateName) {
+				System.out.println(candidateName + " entered into the room.");
+				System.out.println(candidateName + " interview is going on.");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(candidateName + " has done with their interview.");
+	}
+	}
+}
+
+
+package com.multithreading;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class InterviewProcess {
+	public static void main(String[] args) {
+		InterviewLock interviewLock = new InterviewLock("Technical Interview", "Indore", "CSE/IT-21");
+		Lock lock = new ReentrantLock(true);
+
+		synchronized (interviewLock) {
+
+			Thread candidate1 = new Thread(new CandidateLock("Rohit", interviewLock, lock));
+			Thread candidate2 = new Thread(new CandidateLock("Priyansh", interviewLock, lock));
+			Thread candidate3 = new Thread(new CandidateLock("Rahul", interviewLock, lock));
+			Thread candidate4 = new Thread(new CandidateLock("Isha", interviewLock, lock));
+			Thread candidate5 = new Thread(new CandidateLock("Anmol", interviewLock, lock));
+			Thread candidate6 = new Thread(new CandidateLock("Jeet", interviewLock, lock));
+			Thread candidate7 = new Thread(new CandidateLock("Raghav", interviewLock, lock));
+			Thread candidate8 = new Thread(new CandidateLock("Rajiv", interviewLock, lock));
+			Thread candidate9 = new Thread(new CandidateLock("Sonali", interviewLock, lock));
+			Thread candidate10 = new Thread(new CandidateLock("Yash", interviewLock, lock));
+
+			candidate1.start();
+			candidate2.start();
+			candidate3.start();
+			candidate4.start();
+			candidate5.start();
+			candidate6.start();
+			candidate7.start();
+			candidate8.start();
+			candidate9.start();
+			candidate10.start();
+
+		}
+	}
+}
