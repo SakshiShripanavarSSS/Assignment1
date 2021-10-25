@@ -1,0 +1,215 @@
+package com.io;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class AlternatePositionIntoUpperCase {
+
+	public static void main(String[] args) throws IOException {
+		try(Scanner scanner = new Scanner(System.in);){	
+			System.out.print("Enter File path : ");
+			String filePath = scanner.next();
+			alternatePositionIntoUpperCase(filePath);	
+		}
+
+	}
+
+	public static void alternatePositionIntoUpperCase(String path) throws IOException {
+		BufferedReader buffer = new BufferedReader(new FileReader(path));
+		String string = "";
+		String newString = "";
+		String[] array;
+
+		String line = buffer.readLine();
+		while(line!=null) {
+			string += line + System.lineSeparator();
+			line = buffer.readLine();
+		}
+		array = string.split(" ");
+		for(int i=0;i<array.length;i++) {
+			if(i%2==0) {
+				newString +=  array[i].toLowerCase() + " ";
+			}else {
+				newString +=  array[i].toUpperCase() + " ";
+			}
+		}
+		buffer.close();
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		writer.write(newString);
+		writer.flush();
+		writer.close();
+	}
+
+}
+
+package com.io;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class CountWordsAndNumbers {
+	public static void main(String[] args) throws IOException {
+		try(Scanner scanner = new Scanner(System.in);){	
+			System.out.print("Enter File path : ");
+			String filePath = scanner.next();
+
+			countWords(filePath);
+			countNumbers(filePath);
+		}
+
+	}
+
+	public static void countWords(String file) throws IOException {
+		BufferedReader buffer = new BufferedReader(new FileReader(file));
+		int count=0;
+		String line = buffer.readLine();
+		while(line!=null) {
+			String[] arr = line.split(" ");
+			for(String str : arr) {
+				count++;
+			}
+			line = buffer.readLine();
+		}
+		buffer.close();
+		System.out.println("Total Words contained in the file is "+count);
+
+	}
+
+	public static void countNumbers(String file) throws IOException {
+		BufferedReader buffer = new BufferedReader(new FileReader(file));
+		int count=0;
+		String line = buffer.readLine();
+		while(line!=null) {
+			char[] ch = new char[line.length()];
+			for(int i=0;i<ch.length;i++) {
+				ch[i] = line.charAt(i);
+				if(Character.isDigit(ch[i])) {
+					count++;
+				}
+			}
+			line = buffer.readLine();
+		}
+		buffer.close();
+		System.out.println("Total Numbers contained in the file is "+count);
+	}
+}
+
+package com.io;
+
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Scanner;
+
+public class FileCount extends SimpleFileVisitor<Path> {
+
+	static int count=0;
+	public static void main(String[] args) throws IOException{
+		String userPath = null;
+		try(Scanner scanner = new Scanner(System.in);){
+			System.out.print("Enter the path : ");
+			userPath = scanner.nextLine();
+		}
+		Path path = Paths.get(userPath);
+
+		Files.walkFileTree(path, new FileCount());
+		System.out.println("Number of Files in this path is "+count);
+	}
+
+	public FileVisitResult visitFile(Path path, BasicFileAttributes attr) {
+		System.out.println(path.getFileName());
+		if(path.getFileName() != null) {
+			count++;
+		}
+		return FileVisitResult.CONTINUE;
+
+	}
+}
+
+package com.io;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+
+public class ReplaceWord {
+	public static void main(String[] args) throws IOException {
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Enter File path : ");
+		String filePath = scanner.next();
+
+		File file = new File(filePath);
+
+		Scanner scanFile = new Scanner(file);
+		StringBuffer buffer = new StringBuffer();
+
+		while(scanFile.hasNextLine()) {
+			buffer.append(scanFile.nextLine()+System.lineSeparator());
+		}
+		String fileData = buffer.toString();
+		scanFile.close();
+
+		System.out.print("Enter the existing word for replacement : ");
+		String oldWord= scanner.next();	
+		System.out.print("Enter the new word for replacement : ");
+		String newWord= scanner.next();	
+
+		fileData = fileData.replaceAll(oldWord, newWord);
+		FileWriter writer = new FileWriter(file);
+		writer.append(fileData);
+		writer.flush();     
+	}
+}	
+
+
+
+package com.io;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.util.Scanner;
+
+public class SearchExtensionFile extends SimpleFileVisitor<Path>{
+	public static void main(String[] args) throws IOException{
+		String extension = null;
+		try(Scanner scanner = new Scanner(System.in);){
+			System.out.print("Enter extension : ");
+			extension = scanner.next();
+		}
+		getFileName(extension);
+	}
+
+	public static void getFileName(String extension) {
+
+		File file=new File("D:\\Java assignment");
+		File[] files=file.listFiles(new FileFilter() {
+			public boolean accept(File pathname) {
+             if(pathname.getName().endsWith(extension)) {
+            	 return true;
+             }
+				return false;
+			}
+		});
+		for(File extensionFile:files) {
+			System.out.println(extensionFile);
+		}	
+	}
+
+}
