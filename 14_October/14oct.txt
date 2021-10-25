@@ -1,0 +1,85 @@
+package com.java8;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Scanner;
+
+public class BirthDate {
+	public static void main(String[] args) {
+
+		LocalDate localdate = LocalDate.now();
+		int years = Calendar.getInstance().get(Calendar.YEAR);
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Please Enter your Birthdate");
+
+		System.out.print("Enter Day : ");
+		String scanDay = scanner.next();
+		int day = Integer.parseInt(scanDay);
+
+		System.out.print("Enter Month : ");
+		String scanMonth = scanner.next();
+		int month = Integer.parseInt(scanMonth);
+
+		System.out.print("Enter Year : ");
+		String scanYear = scanner.next();
+		int year = Integer.parseInt(scanYear);
+
+		LocalDate birthdate = LocalDate.of(year, month, day);
+		LocalDate nextBirthday = birthdate.plusYears(years - year + 1);
+
+		DayOfWeek dayofWeek = nextBirthday.getDayOfWeek();
+		System.out.println("Day of Week on your Birthdate - "+day+"/"+month+"/"+year+" is " + dayofWeek);
+	}
+}
+
+
+package com.java8;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+
+
+public class CountYear {
+	public static void main(String[] args) {
+		LocalDate localDate = LocalDate.of(1947, Month.AUGUST, 15);
+		LocalDate today = LocalDate.now();
+		Period period = localDate.until(today);
+		System.out.println("Number of years between "+localDate+" to "+today+" : "+period.getYears());	
+	}
+}
+
+package com.java8;
+
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+public class TimeZone {
+	public static void main(String[] args) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+		System.out.println("Time in different cities of the World");
+
+		ZoneId zone = ZoneId.of("BST", ZoneId.SHORT_IDS);
+		LocalTime now = LocalTime.now(zone);
+		System.out.println("Time in London : " + now.format(formatter));
+
+		zone = ZoneId.of("CET", ZoneId.SHORT_IDS);
+		now = LocalTime.now(zone);
+		System.out.println("Time in Berlin : " + now.format(formatter));
+
+		zone = ZoneId.of("EST", ZoneId.SHORT_IDS);
+		now = LocalTime.now(zone);
+		System.out.println("Time in New York : " + now.format(formatter));
+
+		zone = ZoneId.of("IST", ZoneId.SHORT_IDS);
+		now = LocalTime.now(zone);
+		System.out.println("Time in Mumbai : " + now.format(formatter));
+
+		zone = ZoneId.of("SST", ZoneId.SHORT_IDS);
+		now = LocalTime.now(zone);
+		System.out.println("Time in Singapore : " + now.format(formatter));
+	}
+}
